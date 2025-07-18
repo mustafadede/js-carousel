@@ -9,15 +9,16 @@
 
     self.getProducts = () => {
         if (localStorage.getItem("products")) {
+                console.warn("local storage fetching")
                 const localData = localStorage.getItem("products")
                 self.createCardComponent(JSON.parse(localData))
                 return;
         }
         fetch("https://gist.githubusercontent.com/sevindi/8bcbde9f02c1d4abe112809c974e1f49/raw/9bf93b58df623a9b16f1db721cd0a7a539296cf0/products.json").then(res => res.json())
         .then(data => {
-            console.log("fetch is working")
             localStorage.setItem("products", JSON.stringify(data));
             self.createCardComponent(data);
+            console.warn("Fetch is fetching ☝🏻🤓")
         })
     }
 
@@ -37,6 +38,7 @@
                     </div>
                     <div class="product-list-promo">
                         <p>Sepette ${el.price} TL</p>
+                        <p>  % İNDİRİM!</p>
                     </div>
                     <div class="heart">
                         <img src="https://www.e-bebek.com/assets/svg/default-favorite.svg" class="heart-icon"/>
