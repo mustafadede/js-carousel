@@ -1,31 +1,38 @@
 (() => {
     const init = () => {
+        if(localStorage.getItem("fav_products") === null) {
+            localStorage.setItem("fav_products", JSON.stringify([]));
+         } else {
+             localStorage.getItem("fav_products");
+             console.warn("Already fav items created 😎");
+         }
         self.buildHTML();
         self.buildCSS();
         self.setEvents();
         self.getProducts();
         self.createCardComponent();
+        self.createHeartAction();
     };
 
     self.getProducts = () => {
         if (localStorage.getItem("products")) {
-                console.warn("local storage fetching")
-                const localData = localStorage.getItem("products")
-                self.createCardComponent(JSON.parse(localData))
+                console.warn("local storage fetching");
+                const localData = localStorage.getItem("products");
+                self.createCardComponent(JSON.parse(localData));
                 return;
         }
         fetch("https://gist.githubusercontent.com/sevindi/8bcbde9f02c1d4abe112809c974e1f49/raw/9bf93b58df623a9b16f1db721cd0a7a539296cf0/products.json").then(res => res.json())
         .then(data => {
             localStorage.setItem("products", JSON.stringify(data));
             self.createCardComponent(data);
-            console.warn("Fetch is fetching ☝🏻🤓")
+            console.warn("Fetch is fetching ☝🏻🤓");
         })
     }
 
     self.createCardComponent = (data) => {
         data?.forEach(el => {
             const html = `
-                <a class="product-item" href="${el.url}" target="_blank">
+                <a class="product-item myCarousel-card" href="${el.url}" target="_blank">
                     <img src="${el.img}" class="product-item__img"/>
                     <div class="product-item-content">
                         <div class="product-item__brand">
@@ -50,9 +57,11 @@
                         </div>
                     </div>
                 </a>`;
-
-            document.querySelector(".product-list__best-products").insertAdjacentHTML("beforeend", html);
+            
+            document.querySelector(".product-list__best-products").insertAdjacentHTML("beforeend", html)
         });
+
+         createHeartAction();
     };
 
     self.buildHTML = () => {
@@ -72,7 +81,7 @@
             </div>
         </div>
         `;
-        document.querySelector(".banner__opportunity").insertAdjacentHTML("beforebegin", html)
+        document.querySelector(".banner__opportunity").insertAdjacentHTML("beforebegin", html);
     };
     
     self.buildCSS = () => {
@@ -113,6 +122,11 @@
             .product-item {
                 min-width: 242px !important;
             }
+
+            .heart {
+                z-index: 50;
+            }
+            
             .heart-icon {
                 scale: .5;
             }
@@ -144,23 +158,41 @@
     };
 
     self.setEvents = () => {
-        const prevEl = document.querySelector(".myCarousel-prev")
-        const nextEl = document.querySelector(".myCarousel-next")
-        const cardBody = document.querySelector(".product-list__best-products")
+        const prevEl = document.querySelector(".myCarousel-prev");
+        const nextEl = document.querySelector(".myCarousel-next");
+        const cardBody = document.querySelector(".product-list__best-products");
+        // pagination elementsss
         prevEl.addEventListener("click", () => {
             cardBody.scrollBy({ left: -148, behavior: "smooth" });
-        })
+        });
 
          nextEl.addEventListener("click", () => {
             cardBody.scrollBy({ left: 148, behavior: "smooth" });
-        })
-        console.log(prevEl, nextEl)
+        });       
     };
-    
+
+    self.createHeartAction = () => {
+        console.log("hello hearts")
+        const allCards = document.querySelectorAll(".myCarousel-card");
+        allCards.forEach((card, i) => {
+            card.querySelector(".heart").addEventListener("click", () => {
+               const allCards = localStorage.getItem("products")
+               
+               let selectedEl = JSON.parse(allCards)[i];
+               
+               const prevFavItems = localStorage.getItem("fav_products");
+
+               const prevFavs = JSON.parse(prevFavItems)
+               prevFavs.push(selectedEl)
+               localStorage.setItem("fav_products", JSON.stringify(prevFavs))
+            })
+        })
+    }
+
     if (location.pathname === "/") {
         init();
     } else {
-        console.log("wrong page")
+        console.log("wrong page");
     }
 })();
 
