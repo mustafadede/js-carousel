@@ -32,7 +32,7 @@
     self.createCardComponent = (data) => {
         data?.forEach(el => {
             const html = `
-                <a class="product-item myCarousel-card" href="${el.url}" target="_blank">
+                <a class="product-item myCarousel-card" target="_blank">
                     <img src="${el.img}" class="product-item__img"/>
                     <div class="product-item-content">
                         <div class="product-item__brand">
@@ -60,8 +60,6 @@
             
             document.querySelector(".product-list__best-products").insertAdjacentHTML("beforeend", html)
         });
-
-         createHeartAction();
     };
 
     self.buildHTML = () => {
@@ -172,21 +170,20 @@
     };
 
     self.createHeartAction = () => {
-        console.log("hello hearts")
-        const allCards = document.querySelectorAll(".myCarousel-card");
-        allCards.forEach((card, i) => {
-            card.querySelector(".heart").addEventListener("click", () => {
-               const allCards = localStorage.getItem("products")
-               
-               let selectedEl = JSON.parse(allCards)[i];
-               
-               const prevFavItems = localStorage.getItem("fav_products");
+        const allProducts = JSON.parse(localStorage.getItem("products"))
+        const favProducts = JSON.parse(localStorage.getItem("fav_products")) || []
+        const arr = []
+        document.querySelectorAll(".myCarousel-card").forEach((card, i) => {
 
-               const prevFavs = JSON.parse(prevFavItems)
-               prevFavs.push(selectedEl)
-               localStorage.setItem("fav_products", JSON.stringify(prevFavs))
+            card.querySelector(".heart").addEventListener("click", () => {
+                arr.push(allProducts[i]);
+                localStorage.setItem("fav_products", JSON.stringify(arr))
+                const favs = localStorage.getItem("fav_products")
+                console.log(JSON.parse(favs));
+                
             })
         })
+        
     }
 
     if (location.pathname === "/") {
