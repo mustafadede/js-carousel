@@ -38,7 +38,7 @@
                     </div>
                     <div class="product-list-promo">
                         <p>Sepette ${el.price} TL</p>
-                        <p>  % İNDİRİM!</p>
+                        <p> ${(Math.round((el.price - el.original_price)/el.original_price) * 100)} % İNDİRİM!</p>
                     </div>
                     <div class="heart">
                         <img src="https://www.e-bebek.com/assets/svg/default-favorite.svg" class="heart-icon"/>
