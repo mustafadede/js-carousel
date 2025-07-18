@@ -144,6 +144,17 @@
     };
 
     self.setEvents = () => {
+        const prevEl = document.querySelector(".myCarousel-prev")
+        const nextEl = document.querySelector(".myCarousel-next")
+        const cardBody = document.querySelector(".product-list__best-products")
+        prevEl.addEventListener("click", () => {
+            cardBody.scrollBy({ left: -148, behavior: "smooth" });
+        })
+
+         nextEl.addEventListener("click", () => {
+            cardBody.scrollBy({ left: 148, behavior: "smooth" });
+        })
+        console.log(prevEl, nextEl)
     };
     
     if (location.pathname === "/") {
