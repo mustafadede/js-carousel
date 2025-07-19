@@ -30,8 +30,10 @@ self.createCardComponent = (data) => {
     
     data?.forEach(el => {
         const html = `
-            <a class="product-item myCarousel-card" target="_blank">
-                <img src="${el.img}" class="product-item__img"/>
+            <div class="product-item myCarousel-card">
+                <a href={${el.url}} target="_blank">
+                    <img src="${el.img}"  class="product-item__img"/>
+                </a>
                 <div class="product-item-content">
                     <div class="product-item__brand">
                         <b>${el.brand} - </b>
@@ -54,7 +56,7 @@ self.createCardComponent = (data) => {
                         <button class="btn close-btn disable ng-star-inserted">Sepete Ekle</button>
                     </div>
                 </div>
-            </a>`;
+            </div>`;
         
         document.querySelector(".myCarousel-cards").insertAdjacentHTML("beforeend", html)
     });
