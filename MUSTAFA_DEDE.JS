@@ -33,7 +33,7 @@ self.createCardComponent = (data) => {
     data?.forEach(el => {
         const html = `
             <div class="product-item myCarousel-card">
-                <a href={${el.url}} target="_blank">
+                <a href="${el.url}" target="_blank">
                     <img src="${el.img}"  class="product-item__img"/>
                 </a>
                 <div class="product-item-content">
@@ -200,7 +200,7 @@ const createHeartAction = () => {
     const allProducts = JSON.parse(localStorage.getItem("products")) || []
     document.querySelectorAll(".myCarousel-card").forEach((card, i) => {
         const iconHeart = card.querySelector(".icon-add")
-        
+
         card.querySelector(".heart").addEventListener("click", () => {
             let favProducts = JSON.parse(localStorage.getItem("fav_products")) || [];
             const selectedProduct = allProducts[i];
