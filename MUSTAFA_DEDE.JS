@@ -1,6 +1,7 @@
 const init = () => {
     if(localStorage.getItem("fav_products") === null) {
         localStorage.setItem("fav_products", JSON.stringify([]));
+        self.createCardComponent();
     } else {
         localStorage.getItem("fav_products");
         console.warn("Already fav items created 😎");
@@ -9,7 +10,6 @@ const init = () => {
     self.buildCSS();
     self.setEvents();
     self.getProducts();
-    self.createCardComponent();
 };
 self.getProducts = () => {
     if (localStorage.getItem("products")) {
@@ -29,10 +29,9 @@ self.getProducts = () => {
 }
 self.createCardComponent = (data) => {
     const favProducts = JSON.parse(localStorage.getItem("fav_products")) || [] 
-    
     data?.forEach(el => {
         const html = `
-            <div class="product-item myCarousel-card">
+            <div class="product-item myCarousel-card" data-id="${el.id}">
                 <a href="${el.url}" target="_blank">
                     <img src="${el.img}"  class="product-item__img"/>
                 </a>
