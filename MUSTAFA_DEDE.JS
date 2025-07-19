@@ -45,7 +45,7 @@ self.createCardComponent = (data) => {
                 </div>
                 <div class="product-list-promo">
                     <p>Sepette ${el.price} TL</p>
-                    <p> ${(Math.round((el.price - el.original_price)/el.original_price) * 100)} % İNDİRİM!</p>
+                    <p> ${(((el.original_price - el.price)/el.original_price) * 100).toFixed(0)} % İNDİRİM!</p>
                 </div>
                 <div class="heart">
                     <div class="heart-icon icon-add ${favProducts.some(card => card.id === el.id) ? "has-fav" : "has-not-fav"}"></div>
