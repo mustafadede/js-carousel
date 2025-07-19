@@ -23,6 +23,8 @@ self.getProducts = () => {
         localStorage.setItem("products", JSON.stringify(data));
         self.createCardComponent(data);
         console.warn("Fetch is fetching ☝🏻🤓");
+    }).catch(error => {
+        console.warn("error => ", error)
     })
 }
 self.createCardComponent = (data) => {
@@ -113,6 +115,7 @@ self.buildCSS = () => {
         .product-list__best-products {
             display: flex;
             overflow-x: scroll;
+            scroll-behavior: smooth;
             gap: 20px;
             background-size: auto;
             padding: 0 20px;
