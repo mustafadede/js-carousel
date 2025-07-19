@@ -186,7 +186,8 @@ self.buildCSS = () => {
 self.setEvents = () => {
     const prevEl = document.querySelector(".myCarousel-prev");
     const nextEl = document.querySelector(".myCarousel-next");
-    const cardBody = document.querySelector(".product-list__best-products");
+    const cardBody = document.querySelector(".myCarousel-cards");
+
     // pagination elementsss
     prevEl.addEventListener("click", () => {
         cardBody.scrollBy({ left: -148, behavior: "smooth" });
