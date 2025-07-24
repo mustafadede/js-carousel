@@ -30,24 +30,49 @@ self.getProducts = () => {
 self.createCardComponent = (data) => {
     const favProducts = JSON.parse(localStorage.getItem("fav_products")) || [] 
     data?.forEach(el => {
+        let discount = (((el.original_price - el.price)/el.original_price) * 100).toFixed(0)
         const html = `
             <div class="product-item myCarousel-card" data-id="${el.id}">
                 <a href="${el.url}" target="_blank">
                     <img src="${el.img}"  class="product-item__img"/>
                 </a>
-                <div class="product-item-content">
-                    <div class="product-item__brand">
-                        <b>${el.brand} - </b>
-                        <span>${el.name}</span>
+                ${discount == 0 ? `
+                    <div class="product-item-content">
+                        <a class="product-item-anchor" href="${el.url}" target="_blank">
+                            <div class="product-item__brand">
+                                <b>${el.brand} - </b>
+                                <span>${el.name}</span>
+                            </div>
+                        </a>
+                        <div class="product-item__price">
+                            <span class="product-item__new-price">${el.original_price} TL</span>
+                        </div>
                     </div>
-                    <div class="product-item__price">
-                        <span class="product-item__new-price">${el.original_price} TL</span>
+                    <div class="product-list-promo ng-star-inserted">
+                        <p class="ng-star-inserted">Sepette ${el.price} TL</p>
                     </div>
-                </div>
-                <div class="product-list-promo">
-                    <p>Sepette ${el.price} TL</p>
-                    <p> ${(((el.original_price - el.price)/el.original_price) * 100).toFixed(0)} % İNDİRİM!</p>
-                </div>
+                    ` : `
+                     <div class="product-item-content">
+                        <a class="product-item-anchor" href="${el.url}" target="_blank">
+                            <div class="product-item__brand">
+                                <b>${el.brand} - </b>
+                                <span>${el.name}</span>
+                            </div>
+                        </a>
+                        <div class="product-item__price">
+                            <div class="d-flex align-items-center ng-star-inserted m-top">
+                                <span class="product-item__old-price">${el.price} TL</span>
+                                <span class="product-item__percent">
+                                    %${(((el.original_price - el.price)/el.original_price) * 100).toFixed(0)}
+                                    <i class="icon icon-decrease"></i>
+                                </span>
+                            </div>
+                            <span class="product-item__new-price discount-product ng-star-inserted">${el.original_price}</span>
+                            </div>
+                        </div>
+                        <div class="product-list-promo ng-star-inserted">
+                    </div>
+                `}
                 <div class="heart">
                     <div class="heart-icon icon-add ${favProducts.some(card => card.id === el.id) ? "has-fav" : "has-not-fav"}"></div>
                     <div src="https://www.e-bebek.com/assets/svg/default-hover-favorite.svg" class="heart-icon hovered"></div>
@@ -108,12 +133,18 @@ self.buildCSS = () => {
             right: -50px;
             background-image: url('https://cdn06.e-bebek.com/assets/svg/next.svg');
             background-repeat: no-repeat;
-            background-position: 16px;
+            background-position: 18px;
             background-size: auto;
         }
+
+        .product-list__best-products::-webkit-scrollbar {
+            display: none;
+        }
+        
         .product-list__best-products {
             display: flex;
             overflow-x: scroll;
+            scroll: 
             scroll-behavior: smooth;
             gap: 20px;
             background-size: auto;
@@ -162,6 +193,10 @@ self.buildCSS = () => {
         }
         .hovered {
             scale: 1;
+        }
+        
+        .product-item__img {
+            width: 100% !important;
         }
         @media (max-width: 700px) {                
             .myCarousel-prev {
